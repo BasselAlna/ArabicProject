@@ -1,0 +1,166 @@
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الجملة الاسمية</title>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .wrong {
+            color: red;
+        }
+
+        #stars {
+            color: gold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>اختبار الجملة الاسمية</h2>
+        <button id="startBtn">ابدأ</button>
+
+        <div id="quiz" style="display: none;">
+            <p id="question"></p>
+            <div id="options"></div>
+        </div>
+
+        <div id="result" style="display: none;">
+            <p>عدد النجوم التي حصلت عليها:</p>
+            <div id="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "ما هي الأمثلة على الجملة الاسمية من القرآن؟",
+                options: ["الله أكبر", "اقرأ باسم ربك", "هذا كتاب", "سبحان الله"],
+                answer: 2
+            },
+            {
+                question: "ما هي الأخطاء الشائعة في فهم الجملة الاسمية؟",
+                options: ["الخلط بين المبتدأ والخبر", "استخدام الفعل كمبتدأ", "الاعتقاد أن كل جملة تبدأ بأسم هي جملة اسمية", "كل ما سبق"],
+                answer: 3
+            },
+            {
+                question: "ما هو دور الأفعال الناسخة في الجملة الاسمية؟",
+                options: ["تحديد المبتدأ", "تغيير معنى الجملة", "الإشارة إلى الزمن", "تحديد الخبر"],
+                answer: 1
+            },
+            {
+                question: "ما هو دور الحروف الناسخة في الجملة الاسمية؟",
+                options: ["تحديد المبتدأ", "تغيير معنى الجملة", "الإشارة إلى الزمن", "تحديد الخبر"],
+                answer: 1
+            },
+            {
+                question: "كيف تؤثر الأفعال الناسخة على معنى الجملة؟",
+                options: ["تجعل الجملة سؤال", "تجعل الجملة نفي", "تغيير المعنى الأصلي للجملة", "تحديد الزمن"],
+                answer: 2
+            },
+            {
+                question: "كيف تؤثر الحروف الناسخة على معنى الجملة؟",
+                options: ["تجعل الجملة سؤال", "تجعل الجملة نفي", "تغيير المعنى الأصلي للجملة", "تحديد الزمن"],
+                answer: 2
+            },
+            {
+                question: "ما هو الفرق بين الفعل الناسخ والحرف الناسخ؟",
+                options: ["الفعل يدل على الزمن والحرف لا", "الحرف يدل على الزمن والفعل لا", "الفعل يغير معنى الجملة والحرف يحدد المبتدأ", "الفعل والحرف يؤديان نفس الوظيفة"],
+                answer: 0
+            },
+            {
+                question: "هل يمكن أن تكون الجملة الاسمية منفية دون استخدام حروف نفي؟",
+                options: ["نعم", "لا", "فقط في بعض الحالات", "فقط إذا كانت الجملة قصيرة"],
+                answer: 1
+            },
+            {
+                question: "كيف يمكن التعرف على الفعل الناسخ في الجملة؟",
+                options: ["من خلال معنى الجملة", "من خلال مكان الفعل في الجملة", "من خلال الزمن الذي يدل عليه", "من خلال السياق"],
+                answer: 2
+            },
+            {
+                question: "كيف يمكن التعرف على الحرف الناسخ في الجملة؟",
+                options: ["من خلال معنى الجملة", "من خلال مكان الحرف في الجملة", "من خلال الزمن الذي يدل عليه", "من خلال السياق"],
+                answer: 3
+            }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+
+        document.getElementById('startBtn').addEventListener('click', function () {
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('startBtn').style.display = 'none';
+            displayQuestion();
+        });
+
+        function displayQuestion() {
+            if (currentQuestion < questions.length) {
+                const q = questions[currentQuestion];
+                document.getElementById('question').textContent = q.question;
+                let optionsHTML = '';
+                q.options.forEach((option, index) => {
+                    optionsHTML += `<button onclick="checkAnswer(${index})">${option}</button>`;
+                });
+                document.getElementById('options').innerHTML = optionsHTML;
+            } else {
+                document.getElementById('quiz').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('stars').textContent = '⭐'.repeat(score);
+            }
+        }
+
+        function checkAnswer(selectedIndex) {
+            const correctAnswer = questions[currentQuestion].answer;
+            if (selectedIndex === correctAnswer) {
+                score++;
+                document.getElementById('question').classList.add('correct');
+                setTimeout(() => {
+                    document.getElementById('question').classList.remove('correct');
+                    currentQuestion++;
+                    displayQuestion();
+                }, 1000);
+            } else {
+                document.getElementById('question').classList.add('wrong');
+                setTimeout(() => {
+                    document.getElementById('question').classList.remove('wrong');
+                    currentQuestion++;
+                    displayQuestion();
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+
+</html>
